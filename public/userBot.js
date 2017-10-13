@@ -1,3 +1,6 @@
+//
+// Aggresive strategy "run-and-kick"- all players run to ball and kick it if possible to any direction
+//
 'use strict';
 
 function getPlayerMove(data) {
@@ -46,7 +49,7 @@ function getPlayerMove(data) {
 }
 
 function getDirectionTo(startPoint, endPoint) {
-  return Math.atan2(endPoint.y - startPoint.y, ((endPoint.x)-10) - startPoint.x);
+  return Math.atan2(endPoint.y - startPoint.y, ((endPoint.x)-15) - startPoint.x);
 }
 
 
@@ -54,6 +57,26 @@ function getDistance(point1, point2) {
   return Math.hypot(point1.x-point2.x, point1.y - point2.y);
 }
 
+
+
+
+
+// function getPlayerMove(data) {
+//   console.log("data ", data)
+//   // TODO : IMPLEMENT THE BETTER STRATEGY FOR YOUR BOT
+//   var currentPlayer = data.yourTeam.players[data.playerIndex];
+//   var ball = data.ball;
+//
+//   var ballStop = getBallStats(ball, data.settings);
+//
+//   // var attackDirection = Math.atan2(ballStop.y - currentPlayer.y, ballStop.x - currentPlayer.x - ball.settings.radius);
+//   var attackDirection = Math.atan2(ballStop.y - currentPlayer.y, ballStop.x - currentPlayer.x);
+//
+//   return {
+//     direction: attackDirection,
+//     velocity: currentPlayer.velocity + data.settings.player.maxVelocityIncrement
+//   };
+// }
 
 function getBallStats(ball, gameSettings) {
   var stopTime = getStopTime(ball);
