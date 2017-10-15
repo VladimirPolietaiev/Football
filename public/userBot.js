@@ -4,7 +4,7 @@
 'use strict';
 
 function getPlayerMove(data) {
-  console.log("data ", data);
+  console.log("data  ", data);
 
   var currentPlayer = data.yourTeam.players[data.playerIndex];
   var ball = data.ball;
