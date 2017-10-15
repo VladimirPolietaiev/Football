@@ -20,7 +20,7 @@ var LOWPLAYER_TICK;
 
 //MAIN
 function getPlayerMove(data) {
-    var LEFT_SIDE = data.yourTeam.type === "guest";
+    var LEFT_SIDE = data.yourTeam.type === "home";
     UPPERPLAYER_TICK = data.playerIndex === 0;
     GOALKEEPER_TICK = data.playerIndex === 1;
     LOWPLAYER_TICK = data.playerIndex === 2;
