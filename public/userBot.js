@@ -55,6 +55,7 @@ function runRightSideCode(data) {
     }
 }
 
+//-------------
 function runUpPlayerCodeLeftSide(data) {
     var currentPlayer = data.yourTeam.players[data.playerIndex];
     var ball = data.ball;
@@ -145,8 +146,8 @@ function runLowPlayerCodeLeftSide(data) {
     var currentPlayer = data.yourTeam.players[data.playerIndex];
     var ball = data.ball;
     var sixthPartOfFieldWidth = data.settings.field.width / 6;
-    var playerZoneStartX = sixthPartOfFieldWidth * [0, 1, 2][data.playerIndex];
-    var playerZoneWidth = sixthPartOfFieldWidth * [3, 4, 4][data.playerIndex];
+    var playerZoneStartX =  sixthPartOfFieldWidth * 3;
+    var playerZoneWidth = sixthPartOfFieldWidth * 4;
     var ballStop = getBallStats(ball, data.settings);
     var direction = currentPlayer.direction;
     var velocity = currentPlayer.velocity;
@@ -184,18 +185,20 @@ function runLowPlayerCodeLeftSide(data) {
     };
 }
 
+//-------------
+
 function runUpPlayerCodeRightSide(data) {
     var currentPlayer = data.yourTeam.players[data.playerIndex];
     var ball = data.ball;
     var sixthPartOfFieldWidth = data.settings.field.width / 6;
-    var playerZoneStartX = sixthPartOfFieldWidth * [0, 1, 2][data.playerIndex];
-    var playerZoneWidth = sixthPartOfFieldWidth * [3, 4, 4][data.playerIndex];
+    var playerZoneStartX = sixthPartOfFieldWidth * 2;
+    var playerZoneWidth = sixthPartOfFieldWidth * 2;
     var ballStop = getBallStats(ball, data.settings);
     var direction = currentPlayer.direction;
     var velocity = currentPlayer.velocity;
 
-    if ((ballStop.x > playerZoneStartX) && (ballStop.x < playerZoneStartX + playerZoneWidth)) {
-        if (ballStop.x > currentPlayer.x) {
+    if ((ballStop.x < playerZoneStartX) && (ballStop.x > playerZoneStartX - playerZoneWidth)) {
+        if (ballStop.x < currentPlayer.x) {
 
             // can go and kick it to the opponent side
             direction = getDirectionTo(currentPlayer, ballStop);
@@ -205,7 +208,7 @@ function runUpPlayerCodeRightSide(data) {
             // do not kick to the my goalpost, move to the position behind the ball
             const ballRadius = ball.settings.radius;
             var stopPoint = {
-                x: ballStop.x - ballRadius * 2,
+                x: ballStop.x + ballRadius * 2,
                 y: ballStop.y + (ballStop.y > currentPlayer.y ? -ballRadius : +ballRadius) * 5
             };
             direction = getDirectionTo(currentPlayer, stopPoint);
@@ -231,14 +234,14 @@ function runGoalkeeperCodeRightSide(data) {
     var currentPlayer = data.yourTeam.players[data.playerIndex];
     var ball = data.ball;
     var sixthPartOfFieldWidth = data.settings.field.width / 6;
-    var playerZoneStartX = sixthPartOfFieldWidth * [0, 1, 2][data.playerIndex];
-    var playerZoneWidth = sixthPartOfFieldWidth * [3, 4, 4][data.playerIndex];
+    var playerZoneStartX = sixthPartOfFieldWidth / 2;
+    var playerZoneWidth = sixthPartOfFieldWidth * 2;
     var ballStop = getBallStats(ball, data.settings);
     var direction = currentPlayer.direction;
     var velocity = currentPlayer.velocity;
 
-    if ((ballStop.x > playerZoneStartX) && (ballStop.x < playerZoneStartX + playerZoneWidth)) {
-        if (ballStop.x > currentPlayer.x) {
+    if ((ballStop.x < playerZoneStartX) && (ballStop.x > playerZoneStartX - playerZoneWidth)) {
+        if (ballStop.x < currentPlayer.x) {
 
             // can go and kick it to the opponent side
             direction = getDirectionTo(currentPlayer, ballStop);
@@ -248,8 +251,51 @@ function runGoalkeeperCodeRightSide(data) {
             // do not kick to the my goalpost, move to the position behind the ball
             const ballRadius = ball.settings.radius;
             var stopPoint = {
-                x: ballStop.x - ballRadius * 2,
-                y: ballStop.y + (ballStop.y > currentPlayer.y ? -ballRadius : +ballRadius) * 5
+                x: ballStop.x + ballRadius * 2,
+                y: ballStop.y + (ballStop.y > currentPlayer.y ? - ballRadius : + ballRadius) * 2
+            };
+            direction = getDirectionTo(currentPlayer, stopPoint);
+            velocity = getDistance(currentPlayer, stopPoint);
+        }
+    } else {
+
+        var zonePoint = {
+            x: playerZoneStartX +10,
+            y: ball.y + Math.random() * 40 - 20
+        };
+        direction = getDirectionTo(currentPlayer, zonePoint);
+        velocity = getDistance(currentPlayer, zonePoint) < 20 ? 1 : data.settings.player.maxVelocity;
+    }
+
+    return {
+        direction: direction,
+        velocity: velocity
+    };
+}
+
+function runLowPlayerCodeRightSide(data) {
+    var currentPlayer = data.yourTeam.players[data.playerIndex];
+    var ball = data.ball;
+    var sixthPartOfFieldWidth = data.settings.field.width / 6;
+    var playerZoneStartX =  sixthPartOfFieldWidth * 3;
+    var playerZoneWidth = sixthPartOfFieldWidth * 4;
+    var ballStop = getBallStats(ball, data.settings);
+    var direction = currentPlayer.direction;
+    var velocity = currentPlayer.velocity;
+
+    if ((ballStop.x < playerZoneStartX) && (ballStop.x < playerZoneStartX - playerZoneWidth)) {
+        if (ballStop.x < currentPlayer.x) {
+
+            // can go and kick it to the opponent side
+            direction = getDirectionTo(currentPlayer, ballStop);
+            velocity = data.settings.player.maxVelocity; // dont care about acceleration, game engine reduce it to max allowed value
+        } else {
+
+            // do not kick to the my goalpost, move to the position behind the ball
+            const ballRadius = ball.settings.radius;
+            var stopPoint = {
+                x: ballStop.x + ballRadius * 2,
+                y: ballStop.y + (ballStop.y > currentPlayer.y ? -ballRadius : +ballRadius) * 2
             };
             direction = getDirectionTo(currentPlayer, stopPoint);
             velocity = getDistance(currentPlayer, stopPoint);
@@ -269,39 +315,7 @@ function runGoalkeeperCodeRightSide(data) {
         velocity: velocity
     };
 }
-
-function runLowPlayerCodeRightSide(data) {
-    var currentPlayer = data.yourTeam.players[data.playerIndex];
-    var ball = data.ball;
-    var sixthPartOfFieldWidth = data.settings.field.width / 6;
-    var playerZoneStartX = sixthPartOfFieldWidth * [0, 1, 2][data.playerIndex];
-    var playerZoneWidth = sixthPartOfFieldWidth * [3, 4, 4][data.playerIndex];
-    var ballStop = getBallStats(ball, data.settings);
-    var direction = currentPlayer.direction;
-    var velocity = currentPlayer.velocity;
-
-    if (ballStop.x > currentPlayer.x) {
-
-            // can go and kick it to the opponent side
-            direction = getDirectionTo(currentPlayer, ballStop);
-            velocity = data.settings.player.maxVelocity; // dont care about acceleration, game engine reduce it to max allowed value
-    } else {
-
-            // do not kick to the my goalpost, move to the position behind the ball
-            const ballRadius = ball.settings.radius;
-            var stopPoint = {
-                x: ballStop.x - ballRadius * 2,
-                y: ballStop.y + (ballStop.y > currentPlayer.y ? -ballRadius : +ballRadius) * 5
-            };
-            direction = getDirectionTo(currentPlayer, stopPoint);
-            velocity = getDistance(currentPlayer, stopPoint);
-        }
-
-    return {
-        direction: direction,
-        velocity: velocity
-    };
-}
+//-------------
 
 function getDirectionTo(startPoint, endPoint) {
     return Math.atan2(endPoint.y - startPoint.y, endPoint.x - 15  - startPoint.x);
