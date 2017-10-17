@@ -142,31 +142,21 @@ function runLowPlayerCodeLeftSide(data) {
     var direction = currentPlayer.direction;
     var velocity = currentPlayer.velocity;
 
-    if ((ballStop.x > playerZoneStartX) && (ballStop.x < playerZoneStartX + playerZoneWidth)) {
-        if (ballStop.x > currentPlayer.x) {
+    if (ballStop.x > currentPlayer.x) {
 
-            // can go and kick it to the opponent side
-            direction = getDirectionTo(currentPlayer, ballStop);
-            velocity = data.settings.player.maxVelocity; // dont care about acceleration, game engine reduce it to max allowed value
-        } else {
-
-            // do not kick to the my goalpost, move to the position behind the ball
-            const ballRadius = ball.settings.radius;
-            var stopPoint = {
-                x: ballStop.x - ballRadius * 2,
-                y: ballStop.y + (ballStop.y > currentPlayer.y ? -ballRadius : +ballRadius) * 2
-            };
-            direction = getDirectionTo(currentPlayer, stopPoint);
-            velocity = getDistance(currentPlayer, stopPoint);
-        }
+        // can go and kick it to the opponent side
+        direction = getDirectionTo(currentPlayer, ballStop);
+        velocity = data.settings.player.maxVelocity; // dont care about acceleration, game engine reduce it to max allowed value
     } else {
 
-        var zonePoint = {
-            x: playerZoneStartX + 10,
-            y: ball.y + Math.random() * 40 - 20
+        // do not kick to the my goalpost, move to the position behind the ball
+        const ballRadius = ball.settings.radius;
+        var stopPoint = {
+            x: ballStop.x - ballRadius * 2,
+            y: ballStop.y + (ballStop.y > currentPlayer.y ? -ballRadius : +ballRadius) * 2
         };
-        direction = getDirectionTo(currentPlayer, zonePoint);
-        velocity = getDistance(currentPlayer, zonePoint) < 20 ? 1 : data.settings.player.maxVelocity;
+        direction = getDirectionTo(currentPlayer, stopPoint);
+        velocity = getDistance(currentPlayer, stopPoint);
     }
 
     return {
@@ -263,8 +253,7 @@ function runLowPlayerCodeRightSide(data) {
     var direction = currentPlayer.direction;
     var velocity = currentPlayer.velocity;
 
-    if ((ballStop.x < playerZoneStartX) && (ballStop.x < playerZoneStartX - playerZoneWidth)) {
-        if (ballStop.x < currentPlayer.x) {
+    if (ballStop.x < currentPlayer.x) {
 
             // can go and kick it to the opponent side
             direction = getDirectionTo(currentPlayer, ballStop);
@@ -280,15 +269,6 @@ function runLowPlayerCodeRightSide(data) {
             direction = getDirectionTo(currentPlayer, stopPoint);
             velocity = getDistance(currentPlayer, stopPoint);
         }
-    } else {
-
-        var zonePoint = {
-            x: playerZoneStartX + 10,
-            y: ball.y + Math.random() * 40 - 20
-        };
-        direction = getDirectionTo(currentPlayer, zonePoint);
-        velocity = getDistance(currentPlayer, zonePoint) < 20 ? 1 : data.settings.player.maxVelocity;
-    }
 
     return {
         direction: direction,
