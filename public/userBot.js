@@ -120,8 +120,8 @@ function runGoalkeeperCodeLeftSide(data) {
             // do not kick to the my goalpost, move to the position behind the ball
             const ballRadius = ball.settings.radius;
             var stopPoint = {
-                x: ballStop.x - ballRadius * 2,
-                y: ballStop.y + (ballStop.y > currentPlayer.y ? - ballRadius : + ballRadius) * 2
+                x: ballStop.x - ballRadius,
+                y: ballStop.y + (ballStop.y > currentPlayer.y ? - ballRadius : + ballRadius)
             };
             direction = getDirectionTo(currentPlayer, stopPoint);
             velocity = getDistance(currentPlayer, stopPoint);
@@ -129,8 +129,8 @@ function runGoalkeeperCodeLeftSide(data) {
     } else {
 
         var zonePoint = {
-            x: playerZoneStartX + 10,
-            y: ball.y + Math.random() * 40 - 20
+            x: playerZoneStartX,
+            y: ball.y
         };
         direction = getDirectionTo(currentPlayer, zonePoint);
         velocity = getDistance(currentPlayer, zonePoint) < 20 ? 1 : data.settings.player.maxVelocity;
@@ -251,8 +251,8 @@ function runGoalkeeperCodeRightSide(data) {
             // do not kick to the my goalpost, move to the position behind the ball
             const ballRadius = ball.settings.radius;
             var stopPoint = {
-                x: ballStop.x + ballRadius * 2,
-                y: ballStop.y + (ballStop.y > currentPlayer.y ? - ballRadius : + ballRadius) * 2
+                x: ballStop.x + ballRadius,
+                y: ballStop.y + (ballStop.y > currentPlayer.y ? - ballRadius : + ballRadius)
             };
             direction = getDirectionTo(currentPlayer, stopPoint);
             velocity = getDistance(currentPlayer, stopPoint);
@@ -260,8 +260,8 @@ function runGoalkeeperCodeRightSide(data) {
     } else {
 
         var zonePoint = {
-            x: playerZoneStartX +10,
-            y: ball.y + Math.random() * 40 - 20
+            x: playerZoneStartX,
+            y: ball.y
         };
         direction = getDirectionTo(currentPlayer, zonePoint);
         velocity = getDistance(currentPlayer, zonePoint) < 20 ? 1 : data.settings.player.maxVelocity;
