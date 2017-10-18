@@ -94,7 +94,7 @@ function runGoalkeeperCodeLeftSide(data) {
     var ball = data.ball;
     var sixthPartOfFieldWidth = data.settings.field.width / 6;
     var playerZoneStartX = sixthPartOfFieldWidth;
-    var playerZoneWidth = sixthPartOfFieldWidth * 2;
+    var playerZoneWidth = sixthPartOfFieldWidth * 3;
     var ballStop = getBallStats(ball, data.settings);
     var direction = currentPlayer.direction;
     var velocity = currentPlayer.velocity;
@@ -205,7 +205,7 @@ function runGoalkeeperCodeRightSide(data) {
     var ball = data.ball;
     var sixthPartOfFieldWidth = data.settings.field.width / 6;
     var playerZoneStartX = sixthPartOfFieldWidth;
-    var playerZoneWidth = sixthPartOfFieldWidth * 2;
+    var playerZoneWidth = sixthPartOfFieldWidth * 3;
     var ballStop = getBallStats(ball, data.settings);
     var direction = currentPlayer.direction;
     var velocity = currentPlayer.velocity;
