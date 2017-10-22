@@ -262,7 +262,7 @@ function runLowPlayerCodeRightSide(data) {
     direction = getDirectionTo(currentPlayer, ballStop);
     velocity = data.settings.player.maxVelocity; // dont care about acceleration, game engine reduce it to max allowed value
   } else {
-
+ 
     // do not kick to the my goalpost, move to the position behind the ball
     const ballRadius = ball.settings.radius;
     var stopPoint = {

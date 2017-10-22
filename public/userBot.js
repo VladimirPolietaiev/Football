@@ -34,7 +34,7 @@ function getPlayerMove(data) {
         return runRightSideCode(data);
     }
 }
-
+ 
 //SERVICES
 
 function runLeftSideCode(data) {
