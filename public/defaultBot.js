@@ -24,12 +24,12 @@ var LOWPLAYER_TICK;
 function getPlayerMove(data) {
 
   var RIGHT_SIDE = data.opponentTeam.type === "guest";
-  UPPERPLAYER_TICK = data.playerIndex === 0;
+  UPPERPLAYER_TICK = data.playerIndex === "0";
   GOALKEEPER_TICK = data.playerIndex === 1;
   LOWPLAYER_TICK = data.playerIndex === 2;
 
   //check side
-  if (RIGHT_SIDE) {
+  if (data.opponentTeam.type === "guest") {
     return runRightSideCode (data);
   } else {
     return runLeftSideCode(data);
@@ -190,8 +190,8 @@ function runUpPlayerCodeRightSide(data) {
     // do not kick to the my goalpost, move to the position behind the ball
     const ballRadius = ball.settings.radius;
     var stopPoint = {
-      x: ballStop.x + ballRadius * 2,
-      y: ballStop.y + (ballStop.y > currentPlayer.y ? -ballRadius : +ballRadius) * 4
+      x: ballStop.x - ballRadius * 2,
+      y: ballStop.y + (ballStop.y > currentPlayer.y ? -ballRadius : +ballRadius) * 3
     };
     direction = getDirectionTo(currentPlayer, stopPoint);
     velocity = getDistance(currentPlayer, stopPoint);
@@ -225,7 +225,7 @@ function runGoalkeeperCodeRightSide(data) {
       const ballRadius = ball.settings.radius;
       var stopPoint = {
         x: ballStop.x + ballRadius,
-        y: ballStop.y + (ballStop.y > currentPlayer.y ? - ballRadius : + ballRadius)
+        y: ballStop.y + (ballStop.y > currentPlayer.y ? - ballRadius : + ballRadius) * 3
       };
       direction = getDirectionTo(currentPlayer, stopPoint);
       velocity = getDistance(currentPlayer, stopPoint);
